@@ -1,0 +1,14 @@
+# Terraform state (contains sensitive info, never commit this)
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+terraform.tfvars     
+
+# Lambda build artifacts
+lambda.zip
+lambda/requests/
+lambda/charset_normalizer/
+lambda/urllib3/
+lambda/certifi/
+lambda/idna/

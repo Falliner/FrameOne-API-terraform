@@ -1,7 +1,6 @@
 import boto3
 import requests
 import os
-import json
 from datetime import datetime
 
 s3 = boto3.client("s3")
@@ -13,29 +12,38 @@ def lambda_handler(event, context):
 
     for record in event["Records"]:
         bucket = record["s3"]["bucket"]["name"]
-        key    = record["s3"]["object"]["key"]
+        key = record["s3"]["object"]["key"]
 
-        # Download the replay file from S3 into memory
+        #Download replay file from S3
         file_obj = s3.get_object(Bucket=bucket, Key=key)
         file_data = file_obj["Body"].read()
 
-        # POST it to the API as multipart/form-data
         try:
+            #Step 1: GET the presigned POST url + fields
+            presign_response = requests.get(api_url)
+            presign_data = presign_response.json()
+
+            upload_url = presign_data["result"]
+            fields     = presign_data["fields"]  #dict of required form fields
+
+            #Step 2: POST the file to the presigned S3 URL
             response = requests.post(
-                api_url,
-                files={"file": (key, file_data, "application/octet-stream")}
+                upload_url,
+                data=fields,
+                files={"file": (key, file_data, "application/zip")}
             )
-            status = "success" if response.status_code == 200 else "failed"
+            status = "success" if response.status_code in [200, 204] else "failed"
             detail = response.text
+
         except Exception as e:
             status = "error"
             detail = str(e)
 
-        # Log result to DynamoDB
+        #Log to DynamoDB
         table.put_item(Item={
             "replay_key": key,
             "timestamp":  datetime.utcnow().isoformat(),
             "status":     status,
-            "detail":     detail[:500]  # trim long responses
+            "detail":     detail[:500]
         })
         print(f"{key} → {status}")

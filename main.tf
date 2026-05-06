@@ -20,7 +20,7 @@ resource "aws_s3_bucket" "replays" {
 # ── DynamoDB Table ─────────────────────────────────────────
 resource "aws_dynamodb_table" "uploads" {
   name         = "frameone-uploads"
-  billing_mode = "PAY_PER_REQUEST"  # free tier friendly
+  billing_mode = "PAY_PER_REQUEST"  #free tier friendly
   hash_key     = "replay_key"
 
   attribute {

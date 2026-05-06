@@ -27,7 +27,7 @@ Automatically uploads `.zip` replay files to the FrameOne API whenever a file is
 ```
   pip install requests -t lambda/ --break-system-packages
 ```
-3. Create `terraform.tfvars` (not committed — contains your config):
+3. Create `terraform.tfvars`:
 ```
    api_url     = "https://api.frameone.net/upload-zip"
    bucket_name = "your-unique-bucket-name"

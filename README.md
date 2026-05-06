@@ -40,7 +40,7 @@ Automatically uploads `.zip` replay files to the FrameOne API whenever a file is
 
 ## Usage
 
-Drop a `.zip` replay file into your S3 bucket:
+Drop a `.zip` replay file into your S3 bucket (zip of files must be specifically .ggr replay files from Guilty Gear XX Accent Core Plus R) :
 ```
 aws s3 cp your-replay.zip s3://your-bucket-name/
 ```

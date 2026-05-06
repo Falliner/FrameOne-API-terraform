@@ -1,14 +1,18 @@
-# Terraform state (contains sensitive info, never commit this)
+#Terraform state 
 *.tfstate
 *.tfstate.backup
 .terraform/
 .terraform.lock.hcl
 terraform.tfvars     
 
-# Lambda build artifacts
+#Lambda build artifacts
 lambda.zip
 lambda/requests/
 lambda/charset_normalizer/
 lambda/urllib3/
 lambda/certifi/
 lambda/idna/
+
+#AWS CLI installer
+aws/
+awscliv2.zip
